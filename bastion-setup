@@ -1,0 +1,3 @@
+bastion_ami: ami-0ff89c4ce7de192ea
+region: ap-southeast-1
+MyIP: 49.48.189.243/32
