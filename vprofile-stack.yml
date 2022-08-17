@@ -54,3 +54,102 @@
         rules:
           - proto: all
             group_id: "{{vprostacksg_out.group_id}}"
+
+    - name: create nginx as web01
+      ec2:
+        key_name: dev-key
+        region: "{{region}}"
+        instance_type: t2.micro
+        image: "{{nginx_ami}}"
+        wait: yes
+        wait_timeout: 300
+        instance_tags:
+          Name: web01
+          Project: vprofile
+        exact_count: 1
+        count_tag:
+          Name: web01
+          Project: vprofile
+        group_id: "{{vprostacksg_out.group_id}}"
+        vpc_subnet_id: "{{privsub1id}}"
+      register: web01_out
+    
+    - name: create tomcat as app01
+      ec2: 
+        key_name: dev-key
+        region: "{{region}}"
+        instance_type: t2.micro
+        image: "{{tomcat_ami}}"
+        wait: yes
+        wait_timeout: 300
+        instance_tags:
+          Name: app01
+          Project: vprofile
+        exact_count: 1
+        count_tag:
+          Name: app01
+          Project: vprofile
+        group_id: "{{vprostacksg_out.group_id}}"
+        vpc_subnet_id: "{{privsub1id}}"
+      register: app01_out
+    
+    - name: create memcache as mc01
+      ec2: 
+        key_name: dev-key
+        region: "{{region}}"
+        instance_type: t2.micro
+        image: "{{memcache_ami}}"
+        wait: yes
+        wait_timeout: 300
+        instance_tags:
+          Name: mc01
+          Project: vprofile
+        exact_count: 1
+        count_tag:
+          Name: mc01
+          Project: vprofile
+        group_id: "{{vprostacksg_out.group_id}}"
+        vpc_subnet_id: "{{privsub1id}}"
+      register: mc01_out
+    
+    - name: create rabbitmq as rmq01
+      ec2:
+        key_name: dev-key
+        region: "{{region}}"
+        instance_type: t2.micro
+        image: "{{rmq_ami}}"
+        wait: yes
+        wait_timeout: 300
+        instance_tags:
+          Name: rmq01
+          Project: vprofile
+        exact_count: 1
+        count_tag:
+          Name: rmq01
+          Project: vprofile
+        group_id: "{{vprostacksg_out.group_id}}"
+        vpc_subnet_id: "{{privsub1id}}"
+      register: rmq01_out
+    
+    - name: create mysql as db01
+      ec2:
+        key_name: dev-key
+        region: "{{region}}"
+        instance_type: t2.micro
+        image: "{{mysql_ami}}"
+        wait: yes
+        wait_timeout: 300
+        instance_tags:
+          Name: db01
+          Project: vprofile
+        exact_count: 1
+        count_tag:
+          Name: db01
+          Project: vprofile
+        group_id: "{{vprostacksg_out.group_id}}"
+        vpc_subnet_id: "{{privsub1id}}"
+      register: db01_out
+
+    - debug:
+        var: db01_out
+            
