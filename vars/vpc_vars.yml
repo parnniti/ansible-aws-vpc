@@ -12,7 +12,7 @@ PrivSub2Cidr: 172.20.5.0/24
 PrivSub3Cidr: 172.20.6.0/24
 
 # Region Name 
-region: "ap-southeast-1"
+region: ap-southeast-1
 
 # Zone Name
 zone1: ap-southeast-1a
