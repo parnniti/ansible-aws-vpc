@@ -6,9 +6,6 @@
   gather_facts: no
   tasks:
     - name: import vpc setup variables
-      include_vars: vars/bastion_vars.yml
-
-    - name: import vpc setup variables
       include_vars: vars/output_vars.yml
 
     - name: create vprofile ec2 key
@@ -55,4 +52,3 @@
         group_id: "{{bastionsg_out.group_id}}"
         vpc_subnet_id: "{{pubsub1id}}"
       register: bastionhost_out
-        
