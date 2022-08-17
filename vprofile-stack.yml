@@ -26,7 +26,7 @@
     
     - name: create security group for vprofile stack
       ec2_group:
-        name: vpro-stack-sg
+        name: vprostack-sg
         region: "{{region}}"
         vpc_id: "{{vpcid}}"
         purge_rules: no
@@ -40,3 +40,14 @@
             from_port: 22
             to_port: 22
             group_id: "{{BastionSGid}}"
+      register: vprostacksg_out
+    
+    - name: update security group
+      ec2_group:
+        name: vprostack-sg
+        region: "{{region}}"
+        vpc_id: "{{vpcid}}"
+        purge_rules: no
+        rules:
+          - proto: all
+            group_id: "{{vprostacksg_out.group_id}}"
