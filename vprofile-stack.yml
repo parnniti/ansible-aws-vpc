@@ -10,11 +10,12 @@
       include_vars: vars/output_vars.yml
     
     - name: import ami ids
-      include_vars: vars/profile_stack_vars.yml
+      include_vars: vars/vprofile_stack_vars.yml
 
     - name: create security group for load balancer
       ec2_group:
         name: vpro-ELB-sg
+        description: vpro-ELB-sg
         region: "{{region}}"
         vpc_id: "{{vpcid}}"
         rules:
@@ -27,6 +28,7 @@
     - name: create security group for vprofile stack
       ec2_group:
         name: vprostack-sg
+        description: vprostack-sg
         region: "{{region}}"
         vpc_id: "{{vpcid}}"
         purge_rules: no
@@ -45,6 +47,7 @@
     - name: update security group
       ec2_group:
         name: vprostack-sg
+        description: vprostack-sg
         region: "{{region}}"
         vpc_id: "{{vpcid}}"
         purge_rules: no
