@@ -207,7 +207,7 @@
           db01
 
           [control]
-          cntl
+          ansible
 
           [stack_inst:children]
           websrvgrp
