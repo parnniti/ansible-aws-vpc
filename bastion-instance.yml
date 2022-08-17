@@ -54,3 +54,10 @@
         group_id: "{{bastionsg_out.group_id}}"
         vpc_subnet_id: "{{pubsub1id}}"
       register: bastionhost_out
+    
+    - name: insert bastion-sg-id in vars/output_vars.yml
+      blockinfile:
+        path: vars/output_vars.yml
+        backup: yes
+        block:
+          BastionSGid: "{{bastionsg_out.group_id}}"

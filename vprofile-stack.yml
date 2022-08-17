@@ -2,6 +2,41 @@
 - name: setup vprofile stack
   hosts: localhost
   connection: local
+  vars:
+    region: ap-southeast-1
   gather_facts: no
   tasks:
-    - name: 
+    - name: import VPC setup variables
+      include_vars: vars/output_vars.yml
+    
+    - name: import ami ids
+      include_vars: vars/profile_stack_vars.yml
+
+    - name: create security group for load balancer
+      ec2_group:
+        name: vpro-ELB-sg
+        region: "{{region}}"
+        vpc_id: "{{vpcid}}"
+        rules:
+          - proto: tcp
+            from_port: 80
+            to_port: 80
+            cidr_ip: 0.0.0.0/0
+      register: vproELBsg_out
+    
+    - name: create security group for vprofile stack
+      ec2_group:
+        name: vpro-stack-sg
+        region: "{{region}}"
+        vpc_id: "{{vpcid}}"
+        purge_rules: no
+        rules:
+          - proto: tcp
+            from_port: 80
+            to_port: 80
+            group_id: "{{vproELBsg_out.group_id}}"
+          
+          - proto: tcp
+            from_port: 22
+            to_port: 22
+            group_id: "{{BastionSGid}}"
