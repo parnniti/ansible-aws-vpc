@@ -49,9 +49,6 @@
         wait_timeout: 300
         instance_tags:
           Name: bastion-host
-        exact_count: 1
-        count_tag:
-          Name: bastion-host
         group_id: "{{bastionsg_out.group_id}}"
         vpc_subnet_id: "{{pubsub1id}}"
         state: "{{state}}"
