@@ -32,5 +32,5 @@ dbsrvgrp
 
 [stack_inst:vars]
 ansible_user=ubuntu
-ansible_ssh_private_key_file=dev-key.pem
+ansible_ssh_private_key_file=.dev-key.pem
 # END ANSIBLE MANAGED BLOCK
