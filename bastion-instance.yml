@@ -1,6 +1,8 @@
 - name: setup vprofile bastion host
   hosts: localhost
   connection: local
+  vars:
+    state: present
   gather_facts: no
   tasks:
     - name: import vpc setup variables
@@ -13,6 +15,7 @@
       ec2_key:
         name: vprofile-key
         region: "{{region}}"
+        state: "{{state}}"
       register: key_out
     
     - name: save private key into a file
@@ -33,6 +36,7 @@
             from_port: 22
             to_port: 22
             cidr_ip: "{{MyIP}}"
+        state: "{{state}}"
       register: bastionsg_out
     
     - name: create bastion host ec2 instance
@@ -50,5 +54,6 @@
           Name: bastion-host
         group_id: "{{bastionsg_out.group_id}}"
         vpc_subnet_id: "{{pubsub1id}}"
+        state: "{{state}}"
       register: bastionhost_out
         
