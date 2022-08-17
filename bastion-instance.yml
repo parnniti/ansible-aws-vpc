@@ -58,6 +58,6 @@
     - name: insert bastion-sg-id in vars/output_vars.yml
       blockinfile:
         path: vars/output_vars.yml
-        backup: yes
+        backup: no
         block: |
           BastionSGid: "{{bastionsg_out.group_id}}"
