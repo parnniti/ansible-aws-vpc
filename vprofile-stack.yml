@@ -191,7 +191,7 @@
           db01 ansible_host={{ db01_out.tagged_instances[0].private_ip }}
           ansible ansible_host=127.0.0.1 ansible_connection=local
 
-          [websrvgroup]
+          [websrvgrp]
           web01
 
           [appsrvgrp]

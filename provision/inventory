@@ -6,7 +6,7 @@ mc01 ansible_host=172.20.4.80
 db01 ansible_host=172.20.4.125
 ansible ansible_host=127.0.0.1 ansible_connection=local
 
-[websrvgroup]
+[websrvgrp]
 web01
 
 [appsrvgrp]
