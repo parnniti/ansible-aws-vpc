@@ -1,0 +1,7 @@
+---
+- name: setup vprofile stack
+  hosts: localhost
+  connection: local
+  gather_facts: no
+  tasks:
+    - name: 
