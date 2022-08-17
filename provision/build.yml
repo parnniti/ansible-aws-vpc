@@ -6,7 +6,7 @@
   tasks:
     - name: install jdk, maven, git
       apt:
-        install: "{{item}}"
+        name: "{{item}}"
         state: present
         update_cache: yes
       loop:

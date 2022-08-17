@@ -3,7 +3,7 @@
   import_playbook: build.yml
 
 - name: set hosts to ip mapping in /etc/hosts file of all servers
-  import_playbook: set_host_ip_map.yml
+  import_playbook: set-hosts-ip-map.yml
 
 - name: setup dbserver
   import_playbook: db.yml
