@@ -1,0 +1,45 @@
+---
+- hosts: appsrvgrp
+  vars:
+    timestamp: "{{ansible_date_time.date}}-{{ansible_date_time.hour}}-{{ansible_date_time.minute}}"
+    tom_url: https://archive.apache.org/dist/tomcat/tomcat-8/v8.5.37/bin/apache-tomcat-8.5.37.tar.gz
+  tasks:
+    - name: install jdk
+      apt:
+        name: openjdk-8-jdk
+        state: present
+        update_cache: yes
+    
+    - name: download tomcat tarb ball/binaries
+      get_url:
+        url: "{{tom_url}}"
+        dest: /tmp/tomcat-8.tar.gz
+
+    - name: add tomcat group
+      group:
+        name: tomcat
+        state: present
+    
+    - name: add tomcat user
+      user:
+        name: tomcat
+        group: tomcat
+        shell: /bin/nologin
+        home: /user/local/tomcat8
+    
+    - file:
+        path: /tmp/tomcat8
+        state: directory
+
+    - name: extract tomcat
+      unarchive:
+        src: /tmp/tomcat-8.tar.gz
+        dest: /tmp/tomcat8/
+        remote_src: yes
+        list_files: yes
+      register: unarchive_info
+
+    - debug:
+        msg: "{{unarchive_info.files[0].split('/')[0]}}"
+
+    - name: s
