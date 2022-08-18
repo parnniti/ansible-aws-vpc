@@ -62,7 +62,7 @@
         mode: "a+x"
 
     - systemd:
-        daemod_reload: yes
+        daemon_reload: yes
 
     - name: start & enable tomcat service
       service:
