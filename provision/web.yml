@@ -25,7 +25,7 @@
         - conf
     - name: deploy web config file
       template:
-        src: templates/nginxvpro.js
+        src: templates/nginxvpro.j2
         dest: /etc/nginx/sites-available/vproapp
       tags:
         - conf
