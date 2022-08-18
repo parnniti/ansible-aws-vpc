@@ -11,9 +11,11 @@
         - software-properties-common
         - apt-transport-https
         - lsb-release
+      register: installed
 
     - shell: 'curl -fsSL https://packages.erlang-solutions.com/ubuntu/erlang_solutions.asc | sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/erlang.gpg'
-
+      when: "{{installed.changed}}"
+      
     - name: install erlang
       apt:
         name: erlang
@@ -21,6 +23,7 @@
 
     - name: add rabbitmq to ubuntu
       shell: 'curl -s https://packagecloud.io/install/repositories/rabbitmq/rabbitmq-server/script.deb.sh | sudo bash'
+      
 
     - name: install rabbitmq
       apt:
