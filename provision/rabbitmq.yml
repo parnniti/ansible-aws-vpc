@@ -14,8 +14,8 @@
       register: installed
 
     - shell: 'curl -fsSL https://packages.erlang-solutions.com/ubuntu/erlang_solutions.asc | sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/erlang.gpg'
-      when: "{{installed.changed}}"
-      
+      when: installed.changed
+
     - name: install erlang
       apt:
         name: erlang
