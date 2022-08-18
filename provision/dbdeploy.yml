@@ -1,28 +1,28 @@
 ---
-hosts: dbsrvgrp
-gather_facts: no
-tasks:
-  - name: copy sql to dbsrv
-    copy:
-      src: files/db_backup.sql
-      dest: /tmp/db_backup.sql
-    tags:
-      - deploy
-  
-  - name: restore db
-    mysql_db:
-      name: accounts
-      login_user: "{{dbuser}}"
-      login_password: "{{dbpassword}}"
-      state: import
-      target: /tmp/db_backup.sql
-    notify:
-      - restart mysql
-    tags:
-      - deploy
+- hosts: dbsrvgrp
+  gather_facts: no
+  tasks:
+    - name: copy sql to dbsrv
+      copy:
+        src: files/db_backup.sql
+        dest: /tmp/db_backup.sql
+      tags:
+        - deploy
+    
+    - name: restore db
+      mysql_db:
+        name: accounts
+        login_user: "{{dbuser}}"
+        login_password: "{{dbpassword}}"
+        state: import
+        target: /tmp/db_backup.sql
+      notify:
+        - restart mysql
+      tags:
+        - deploy
 
-handlers:
-  - name: restart mysql
-    service:
-      name: mysql
-      state: restarted
+  handlers:
+    - name: restart mysql
+      service:
+        name: mysql
+        state: restarted

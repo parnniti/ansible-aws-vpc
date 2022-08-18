@@ -1,56 +1,56 @@
 ---
-hosts: dbsrvgrp
-gather_facts: no
-tasks:
-  - name: install mysql
-    package:
-      name: "{{item}}"
-      state: present
-      update_cache: yes
-    loop:
-      - mysql-server
-      - mysql-client
-      - python-mysqldb
-      - python3-mysqldb
-      - libmysqlclient-dev
-    ignore_errors: yes
-    tags:
-      - package
+- hosts: dbsrvgrp
+  gather_facts: no
+  tasks:
+    - name: install mysql
+      package:
+        name: "{{item}}"
+        state: present
+        update_cache: yes
+      loop:
+        - mysql-server
+        - mysql-client
+        - python-mysqldb
+        - python3-mysqldb
+        - libmysqlclient-dev
+      ignore_errors: yes
+      tags:
+        - package
 
-  - name: start && enable mysql
-    service:
-      name: mysql
-      state: started
-      enabled: yes
-    tags:
-      - svc
-  
-  - name: create mysql users
-    mysql_user:
-      name: "{{dbuser}}"
-      password: "{{dbpass}}"
-      priv: '*.*:ALL'
-      host: '%'
-      state: present
-  
-  - name: create {{dbname}} db
-    mysql_db:
-      name: "{{dbname}}"
-      state: present
-  
-  - name: enable remote login to mysql svc
-    lineinfile:
-      path: /etc/mysql/mysql.conf.d/mysqld.cnf
-      regexp: '^bind-address'
-      line: 'bind-address = 0.0.0.0'
-    notify:
-      - restart mysql
-    tags:
-      - conf
-  
-handlers:
-  - name: restart mysql
-    service:
-      name: mysql
-      state: restarted
-      
+    - name: start && enable mysql
+      service:
+        name: mysql
+        state: started
+        enabled: yes
+      tags:
+        - svc
+    
+    - name: create mysql users
+      mysql_user:
+        name: "{{dbuser}}"
+        password: "{{dbpass}}"
+        priv: '*.*:ALL'
+        host: '%'
+        state: present
+    
+    - name: create {{dbname}} db
+      mysql_db:
+        name: "{{dbname}}"
+        state: present
+    
+    - name: enable remote login to mysql svc
+      lineinfile:
+        path: /etc/mysql/mysql.conf.d/mysqld.cnf
+        regexp: '^bind-address'
+        line: 'bind-address = 0.0.0.0'
+      notify:
+        - restart mysql
+      tags:
+        - conf
+    
+  handlers:
+    - name: restart mysql
+      service:
+        name: mysql
+        state: restarted
+        
