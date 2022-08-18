@@ -13,7 +13,7 @@
       mysql_db:
         name: accounts
         login_user: "{{dbuser}}"
-        login_password: "{{dbpassword}}"
+        login_password: "{{dbpass}}"
         state: import
         target: /tmp/db_backup.sql
       notify:
