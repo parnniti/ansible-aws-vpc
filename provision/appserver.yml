@@ -9,7 +9,7 @@
         name: openjdk-8-jdk
         state: present
         update_cache: yes
-    
+
     - name: download tomcat tarb ball/binaries
       get_url:
         url: "{{tom_url}}"
@@ -19,14 +19,14 @@
       group:
         name: tomcat
         state: present
-    
+
     - name: add tomcat user
       user:
         name: tomcat
         group: tomcat
         shell: /bin/nologin
         home: /user/local/tomcat8
-    
+
     - file:
         path: /tmp/tomcat8
         state: directory
@@ -54,7 +54,7 @@
         owner: tomcat
         group: tomcat
         recurse: yes
-    
+
     - name: setup tomcat svc file on ubuntu
       template:
         src: templates/tomcat8-ubuntu.js
@@ -63,7 +63,7 @@
 
     - systemd:
         daemod_reload: yes
-    
+
     - name: start & enable tomcat service
       service:
         name: tomcat8
@@ -71,13 +71,13 @@
         enabled: yes
       tags:
         - svc
-    
+
     - stat:
         path: /usr/local/tomcat8/webapps/ROOT
       register: artifact_stat
       tags:
         - deploy
-    
+
     - name: stop tomcat8 service
       service:
         name: tomcat8
@@ -95,13 +95,13 @@
           register: archive_info
           tags:
             - deploy
-    
+
         - name: copy ROOT dir with old_ROOT name
           shell: cp -r ROOT old_ROOT
           args:
             chdir: /usr/local/tomcat8/webapps/
-        
-        - name: Delete current artifact
+
+        - name: delete current artifact
           file:
             path: "{{item}}"
             state: absent
@@ -111,6 +111,16 @@
             - /usr/local/tomcat8/webapps/ROOT.war
           tags:
             - deploy
+        
+        - name: try to deploy artifact
+          block:
+            - name: deploy vprofile artifact
+              copy:
+                src: files/ROOT.war
+                dest: /usr/local/tomcat8/webapps/ROOT.war
+              register: deploy_info
+              tags:
+                - deploy
           rescue:
             - shell: cp -r old_ROOT ROOT
               args:
@@ -120,6 +130,7 @@
           service:
             name: tomcat8
             state: started
+
     - name: start tomcat8 svc
       service:
         name: tomcat8
@@ -127,11 +138,12 @@
       when: deploy_info.changed
       tags:
         - deploy
+
     - name: wait until ROOT.war is extracted to ROOT directory
       wait_for:
         path: /usr/local/tomcat8/webapps/ROOT
       tags:
-       - deploy
+        - deploy
 
     - name: deploy web configuration file
       template:
@@ -142,7 +154,7 @@
         - restart tomcat
       tags:
         - deploy
-  
+
   handlers:
     - name: restart tomcat
       service:
